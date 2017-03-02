@@ -1,17 +1,20 @@
-import React, {
+import React, { Component } from 'react';
+import {
   StyleSheet,
-  Component,
   View,
   Text,
   Image,
   ListView,
   ScrollView,
-  TouchableHighlight
+  TouchableHighlight,
+  Dimensions
 } from 'react-native';
+
+var {height, width} = Dimensions.get('window');
 
 export default class PhotoList extends Component {
 
-  constructor(props){
+  constructor(props) {
     super(props);
 
   }
@@ -25,22 +28,23 @@ export default class PhotoList extends Component {
               <Image
                 key={`PhotoItem_${item.id}_${index}`}
                 style={styles.image}
-                source={{uri: item.image_url}}
+                source={{ uri: item.image_url }}
+                resizeMode='contain'
               />
             );
           })
         }
         {
-         (() => {
-           if (this.props.status === 'DONE') {
-             return (
-               <TouchableHighlight style={styles.button} onPress={this.props.actions.searchNextPageAction}>
-                <Text style={styles.buttonText}>Load More</Text>
-              </TouchableHighlight>
-             );
-           }
-         })()
-       }
+          (() => {
+            if (this.props.status === 'DONE') {
+              return (
+                <TouchableHighlight style={styles.button} onPress={this.props.searchNextPageAction}>
+                  <Text style={styles.buttonText}>Load More</Text>
+                </TouchableHighlight>
+              );
+            }
+          })()
+        }
       </ScrollView>
     )
   }
@@ -48,9 +52,10 @@ export default class PhotoList extends Component {
 
 const styles = StyleSheet.create({
   image: {
-    width:400,
-    height:400,
-    flex: 1
+    width: width - 20,
+    height: width - 20,
+    flex: 1,
+    margin: 10
   },
   button: {
     height: 50,
@@ -58,7 +63,9 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
     justifyContent: 'center',
     paddingTop: 10,
-    paddingBottom:10
+    paddingBottom: 10,
+    margin: 10,
+    elevation: 5
   },
   buttonText: {
     fontSize: 22,
