@@ -6,8 +6,16 @@ This is a [post](http://welllin.net/make-a-react-native-app-using-redux/) tutori
 
 Clone the project and get it running:
 
+* iOS
+
 ```
 npm install
 cd ios
 open reactNativeRedux500px.xcodeproj
+```
+* Android
+
+```
+npm install
+react-native run-android
 ```
