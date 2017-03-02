@@ -1,16 +1,16 @@
-import React, {
+import React, { Component } from 'react';
+import {
   StyleSheet,
-  Component,
   View,
   Text,
   Image,
   TouchableHighlight,
   TextInput,
-  ActivityIndicatorIOS
+  ActivityIndicator
 } from 'react-native';
 
 export default class SearchInput extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
       search: '',
@@ -18,11 +18,12 @@ export default class SearchInput extends Component {
     }
   }
 
-  searchPhoto(){
-    if(this.state.search){
-      this.props.actions.searchPhotoAction(this.state.search);
+  searchPhoto() {
+    if (this.state.search) {
+      this.props.searchPhotoAction(this.state.search);
+      this.setState({ emptyValue: false });
     } else {
-      this.setState({emptyValue: true});
+      this.setState({ emptyValue: true });
     }
   }
 
@@ -30,63 +31,69 @@ export default class SearchInput extends Component {
 
     let errorVal = <View />
 
-    if(this.state.emptyValue){
+    if (this.state.emptyValue) {
       errorVal = <Text style={styles.error}>
-                    Can't search with empty value...
+        Can't search with empty value...
                   </Text>;
     }
 
     return (
-        <View style={{ alignItems: 'center', justifyContent: 'center'}}>
-          <Image source={require('image!500px_logo')} />
-          <TextInput style={styles.input}
-            onChangeText={(text) => this.setState({search: text})}
-            placeholder="Type something to earch..." />
-          <TouchableHighlight style={styles.button} onPress={this.searchPhoto.bind(this)}>
-            <Text style={styles.buttonText}>
-              Search
-            </Text>
-          </TouchableHighlight>
+      <View style={styles.logo}>
+        <Image source={require('../images/500px_logo.png')} />
+        <TextInput style={styles.input}
+          onChangeText={(text) => this.setState({ search: text })}
+          placeholder="Type something to search..." />
+        <TouchableHighlight style={styles.button} onPress={this.searchPhoto.bind(this)}>
+          <Text style={styles.buttonText}>Search</Text>
+        </TouchableHighlight>
 
-          {errorVal}
+        {errorVal}
 
-          <ActivityIndicatorIOS
-            animating={this.props.status === 'PENDING'}
-            size="large"
-            style={styles.loader} />
-        </View>
+        {(this.props.status === 'PENDING') ? <ActivityIndicator
+          animating={this.props.status === 'PENDING'}
+          size="large"
+          style={styles.loader} /> : null}
+      </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
+  logo: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    margin: 20
+  },
   button: {
-    height: 30,
-    paddingTop: 25,
-    paddingBottom: 25,
+    height: 40,
+    paddingTop: 10,
+    paddingBottom: 10,
     paddingLeft: 40,
     paddingRight: 40,
     backgroundColor: 'lightgray',
     alignItems: 'center',
     justifyContent: 'center',
     margin: 3,
+    marginBottom: 10,
+    elevation: 5
   },
   buttonText: {
     fontSize: 22,
-    fontWeight:'600',
-    color: '#fff',
+    fontWeight: '600',
+    color: '#000',
     alignSelf: 'center'
   },
   input: {
     height: 50,
+    width: 300,
     margin: 20,
     padding: 4,
     fontSize: 18,
     paddingLeft: 20,
     backgroundColor: '#fff'
   },
-  error:{
-    marginTop:10,
+  error: {
+    marginTop: 10,
     color: '#c7254e'
   }
 });
